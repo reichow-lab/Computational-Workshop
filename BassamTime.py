@@ -1,4 +1,4 @@
-yes is True
+yes = True
 
 while yes is True:
 
