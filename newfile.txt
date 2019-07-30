@@ -1,5 +1,0 @@
-Matt, I want you to clone this repository into a new directory on klaus...hopefully you have git.
-
-This edit was made in the edit-branch.
-
-This is not actually an edit.
