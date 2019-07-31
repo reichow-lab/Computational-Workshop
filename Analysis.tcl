@@ -95,7 +95,8 @@ proc align {} {
 proc rmsd {} {
 
 	# Setting initial variables
-	lassign [get_rmsinfo]	ref_molid sel_molid selection
+	set	molid		[get_molid]
+	set	selection	[get_selection]
 	set	sel		[atomselect $molid $selection]
 	set	outfile		[get_outfile]
 	set	outf		[open $outfile w]
@@ -107,12 +108,12 @@ proc rmsd {} {
 	for {set f 0} {$f < $frames} {incr f} {
 
 		animate goto $f
-		set	rmsd_struc	[atomselect $sel_molid $selection]
+		set	rmsd_struc	[atomselect $molid $selection]
 		set	rmsd_calc	[measure rmsd $rmsd_struc $rmsd_ref]
 		puts	$outf		"$f\t$rmsd_calc"
 		unset	rmsd_struc rmsd_calc
 	}
-	unset ref_molid sel_molid selection sel outfile frames rmsd_sel rmsd_ref
+	unset molid selection sel outfile frames rmsd_sel rmsd_ref
 	close $outf
 }
 
@@ -121,6 +122,7 @@ proc rmsd {} {
 proc rmsf {} {
 
 	# Setting initial variables
+	set	molid		[get_molid]
 	set	selection	[get_selection]
 	set	sel		[atomselect $molid $selection]
 	set	outfile		[get_outfile]
@@ -134,7 +136,7 @@ proc rmsf {} {
 		puts	$outf		"$atom\t$rmsf_calc"
 		unset	atom rmsf_calc
 	}
-	unset	molid selection sel outfile frames indices
+	unset	molid selection sel outfile indices
 	close	$outf
 }
 
@@ -221,23 +223,49 @@ proc dihedral {} {
 }
 
 
-## Measures and writes to file the center of mass of select atoms per timestep
-proc center_of_mass {} {
+## Measures and/or writes to file the center of mass of select atoms per timestep
+proc center_of_mass {{opt 0}} {
 
 	# Setting initial variables
 	set	molid		[get_molid]
 	set	selection	[get_selection]
 	set	sel		[atomselect $molid $selection]
 	if	{[$sel num] <= 0} {error "center_of_mass: needs a \selection with atoms"}
-	set	com		[veczero]
-	set	mass		0
 
-	# Computes weighted center by mass of atoms
-	foreach coord [$selection get {x y z}] m [$selection get mass] {
+	if {$opt} {
 
-		set	mass	[expr $mass + $m]
-		set	com	[vecadd $com [vecscale $m $coord]]
+		# Writes the trajectory of the selection by means of center of mass
+		set	outfile		[get_outfile]
+		set	outf		[open $outfile w]
+		set	frames		[molinfo $molid get numframes]
+
+		for {set f 0} {$f < $frames} {incr f} {
+
+			animate goto $f
+			set	com	[veczero]
+			set	mass	0
+
+			foreach coord [$sel get {x y z}] m [$sel get mass] {
+
+				set	mass	[expr $mass + $m]
+				set	com	[vecadd $com [vecscale $m $coord]]
+			}
+			set	com_traj	[vecscale [expr 1.0/$mass] $com]
+			puts	$outf		"$com_traj"
+		}
+	} else {
+
+		set	com	[veczero]
+		set	mass	0
+
+		# Computes weighted center by mass of atoms
+		foreach coord [$sel get {x y z}] m [$sel get mass] {
+
+			set	mass	[expr $mass + $m]
+			set	com	[vecadd $com [vecscale $m $coord]]
+		}
+
+		return [vecscale [expr 1.0/$mass] $com]
 	}
-
-	return [vecscale [expr 1.0/$mass] $com]
+	unset molid selection sel com mass
 }
