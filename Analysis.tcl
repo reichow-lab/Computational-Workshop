@@ -184,7 +184,6 @@ proc radius_gyro {} {
         	animate goto $i
 	        set	rad	[measure rgyr $sel]
         	puts	$outf	[format "$i\t$rad"]
-		unset	rad
 	}
 	unset	molid selection sel outfile frames
 	close	$outf
