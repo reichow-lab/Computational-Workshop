@@ -1,6 +1,4 @@
-yes = True
-
-while yes is True:
+while True:
 
 	print("It's Bassam Time!!!!")
 
