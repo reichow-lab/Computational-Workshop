@@ -1,14 +1,16 @@
 from glob	import glob
 from sys	import argv
-from matplotlib import pyplot as plt 
+from matplotlib import pyplot as plt
 import re
+import numpy as np
+
 """
 Up above I am using two libraries that are not automatically built into python. They allow us to use certain functionalities
 that we would otherwise have to create ourselves.
 
 Glob is a library that allows us to search through directories via python.
 
-Sys is a library that allows us to communicate with the command line, and argv is a specific method (function) in the sys 
+Sys is a library that allows us to communicate with the command line, and argv is a specific method (function) in the sys
 library that lets us put command-line arguments into our program as variables.
 
 Re (regular expression), is a library that allows us to use grep-like functionalities in python.
@@ -34,9 +36,9 @@ for starfile in starlist:
 
 	with open(starfile) as star:
 
-		classd.write(str(iteration) + '\t') 
-		accrot.write(str(iteration) + '\t') 
-		acctra.write(str(iteration) + '\t') 
+		classd.write(str(iteration) + '\t')
+		accrot.write(str(iteration) + '\t')
+		acctra.write(str(iteration) + '\t')
 
 		iteration += 1
 
@@ -57,3 +59,19 @@ for starfile in starlist:
 classd.close()
 accrot.close()
 acctra.close()
+
+#################################################################
+
+def plotter(infile, title, ylabel, xlabel):
+
+    iteration, class1, class2, class3, class4 = np.loadtxt(infile, delimiter='\t', unpack=True)
+
+    plt.plot(iteration, class1, 'r--', iteration, class2, 'b--', iteration, class3, 'y--', iteration, class4, 'g--')
+    plt.title(title)
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
+    plt.show()
+
+#################################################################
+
+plotter(classd_end, 'Class Distributions', 'Population (%)', 'Iteration Number')
