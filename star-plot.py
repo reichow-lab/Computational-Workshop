@@ -64,7 +64,7 @@ acctra.close()
 
 def plotter(infile, title, ylabel, xlabel):
 
-    iteration, class1, class2, class3, class4 = np.loadtxt(infile, delimiter='\t', unpack=True)
+    iteration, class1, class2, class3, class4 = np.loadtxt(infile, dtype=str, delimiter='\t', unpack=True)
 
     plt.plot(iteration, class1, 'r--', iteration, class2, 'b--', iteration, class3, 'y--', iteration, class4, 'g--')
     plt.title(title)
