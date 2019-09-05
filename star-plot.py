@@ -75,3 +75,5 @@ def plotter(infile, title, ylabel, xlabel):
 #################################################################
 
 plotter(classd_end, 'Class Distributions', 'Population (%)', 'Iteration Number')
+plotter(accrot_end, 'Accuracy Rotation', 'Rotation (degrees)', 'Iteration Number')
+plotter(acctra_end, 'Accuracy Translation', 'Translation (Angstrom)', 'pixels')
