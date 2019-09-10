@@ -75,8 +75,8 @@ def plotter(infile, title, ylabel, xlabel, filename):
 
 #################################################################
 filename1 = outname + "_rlnClassDistribution.png"
-filename2 = outname + '_rlnAccuracyRotations.txt'
-filename3 = outname + '_rlnAccuracyTranslations.txt'
+filename2 = outname + '_rlnAccuracyRotations.png'
+filename3 = outname + '_rlnAccuracyTranslations.png'
 
 plotter(classd_end, 'Class Distributions', 'Population (%)', 'Iteration Number', filename1)
 plotter(accrot_end, 'Accuracy Rotation', 'Rotation (degrees)', 'Iteration Number', filename2)
