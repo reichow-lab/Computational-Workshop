@@ -62,7 +62,7 @@ acctra.close()
 
 #################################################################
 
-def plotter(infile, title, ylabel, xlabel):
+def plotter(infile, title, ylabel, xlabel, filename):
 
     iteration, class1, class2, class3, class4 = np.genfromtxt(infile, delimiter='\t', dtype=float, unpack=True, usecols = (0,1,2,3,4))
 
@@ -70,10 +70,14 @@ def plotter(infile, title, ylabel, xlabel):
     plt.title(title)
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
+    plt.savefig(filename)
     plt.show()
 
 #################################################################
+filename1 = outname + "_rlnClassDistribution.png"
+filename2 = outname + '_rlnAccuracyRotations.txt'
+filename3 = outname + '_rlnAccuracyTranslations.txt'
 
-plotter(classd_end, 'Class Distributions', 'Population (%)', 'Iteration Number')
-plotter(accrot_end, 'Accuracy Rotation', 'Rotation (degrees)', 'Iteration Number')
-plotter(acctra_end, 'Accuracy Translation', 'Translation (Angstrom)', 'pixels')
+plotter(classd_end, 'Class Distributions', 'Population (%)', 'Iteration Number', filename1)
+plotter(accrot_end, 'Accuracy Rotation', 'Rotation (degrees)', 'Iteration Number', filename2)
+plotter(acctra_end, 'Accuracy Translation', 'Translation (Angstrom)', 'pixels', filename3)
